@@ -2,10 +2,10 @@ import "#app/polyfills"; // All polyfills MUST be loaded first for side effects
 import "#init/init-manifest"; // initializes the manifest, must be done *before* i18n is initialized due to being used for caching
 import "#app/i18n"; // Initializes i18n on import
 
-import { inject } from "@vercel/analytics";
 import { InvertPostFX } from "#app/pipelines/invert";
 import { isBeta, isDev } from "#constants/app-constants";
 import { version } from "#package.json";
+import { inject } from "@vercel/analytics";
 import Phaser from "phaser";
 import BBCodeTextPlugin from "phaser3-rex-plugins/plugins/bbcodetext-plugin";
 import InputTextPlugin from "phaser3-rex-plugins/plugins/inputtext-plugin";
@@ -13,7 +13,10 @@ import TransitionImagePackPlugin from "phaser3-rex-plugins/templates/transitioni
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 // Initialize Vercel Web Analytics
-inject();
+inject({
+  mode: isDev ? "development" : "production",
+  debug: isDev,
+});
 
 if (isBeta || isDev) {
   document.title += " (Beta)";
